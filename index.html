@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <style>
-        textarea.code {
-            height: 150px;
-        }
-    </style>
+	<link rel="stylesheet" href="http://esironal.github.io/cmtouch/lib/codemirror.css">
+	<script src="http://esironal.github.io/cmtouch/lib/codemirror.js"></script>
+	<script src="http://esironal.github.io/cmtouch/mode/javascript/javascript.js"></script>
+	<script src="http://esironal.github.io/cmtouch/addon/selection/active-line.js"></script>
+	<script src="http://esironal.github.io/cmtouch/addon/edit/matchbrackets.js"></script>
+
+	<link rel="stylesheet" href="http://esironal.github.io/cmtouch/theme/neonsyntax.css">
     <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -17,23 +19,46 @@
     <title>Test Your JS Coding Skills</title>
     <script>
         $(document).ready(function () {
-            var test1Counter = 0;
-            function test1 () {
-                test1Counter++;
+            /**
+             * Prettier code editing with CodeMirror
+             */
+            var codeAreaDefaults = {
+                mode: "javascript",
+				theme: "neonsyntax",
+				styleActiveLine: true,
+				matchBrackets: true
+            };
+            var editor1 = CodeMirror.fromTextArea(document.getElementById('test1code'),codeAreaDefaults);
+			var editor2 = CodeMirror.fromTextArea(document.getElementById('test2code'),codeAreaDefaults);
+			var editor3 = CodeMirror.fromTextArea(document.getElementById('test3code'),codeAreaDefaults);
+
+            /**
+             * Reduce code duplication and centralize the success/fail code.
+             */
+            function showPassOrFail (condition, el) {
+                if (el) {
+                    $(el).attr('class', 'alert alert-success').text('Correct!');
+                } else {
+                    $(el).attr('class', 'alert alert-danger').text('Wrong, try again!');
+                }
             }
 
             $('#test1').on('click', function () {
+                // Just declare the counter and test1 function inside the callback scope
+                var test1Counter = 0;
+                function test1 () {
+                    test1Counter++;
+                }
+
+                editor1.save();
                 var code = $('#test1code').val();
                 eval(code);
-                if (test1Counter === 100) {
-                    $('#test1Result').attr('class', 'alert alert-success').text('Correct!');
-                } else {
-                    $('#test1Result').attr('class', 'alert alert-danger').text('Wrong, try again!');
-                }
+                showPassOrFail(test1Counter === 100, '#test1Result');
                 test1Counter = 0;
             });
 
             $('#test2').on('click', function () {
+                editor2.save();
                 var code = $('#test2code').val();
                 var try1 = try2 = false;
                 eval(code);
@@ -43,27 +68,15 @@
                 if (test2(8, -1) === 8) {
                     try2 = true;
                 }
-                if (try1 && try2) {
-                    $('#test2Result').attr('class', 'alert alert-success').text('Correct!');
-                } else {
-                    $('#test2Result').attr('class', 'alert alert-danger').text('Wrong, try again!');
-                }
+                showPassOrFail(try1 && try2, '#test2Result');
             });
 
             $('#test3').on('click', function () {
+                editor3.save();
                 var code = $('#test3code').val();
                 eval(code);
                 var elText = $('#test3hidden').text();
-                if (elText === 'hello') {
-                    $('#test3Result')
-                        .attr('class', 'alert alert-success')
-                        .text('Correct!');
-                } else {
-                    $('#test3Result')
-                        .attr('class', 'alert alert-danger')
-                        .text('Wrong, try again!');
-                }
-                
+                showPassOrFail(elText === 'hello', '#test3Result');                
             });
         });
     </script>
@@ -76,8 +89,7 @@
                 <h2>Test 1: For Loops</h2>
                 <textarea id="test1code" class="form-control code">
 //Write a for loop that will call the function test1 100 times
-
-                </textarea>
+</textarea>
                 <div id="test1Result" class="alert alert-secondary">Click "Test" to see result</div>
                 <button id="test1" class="btn btn-primary btn-large">Test</button>
             </div>
@@ -88,7 +100,7 @@
                 <textarea id="test2code" class="form-control code">
 // Write a function called test2 that takes 2 parameters that are numbers and returns the 
 // larger of the numbers
-                </textarea>
+</textarea>
                 <div id="test2Result"class="alert alert-secondary">Click "Test" to see result</div>
                 <button id="test2" class="btn btn-primary btn-large">Test</button>
             </div>
@@ -100,7 +112,8 @@
                 <div id="test3hidden" class="d-none"></div>
                 <textarea id="test3code" class="form-control code">
 // Modify the text of the #test3hidden element to say hello
-                </textarea>
+</textarea>
+                <div id="test3text"></div>
                 <div id="test3Result" class="alert alert-secondary">Click Test</div>
                 <button id="test3" class="btn btn-primary btn-large">Test</button>
             </div>
