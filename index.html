@@ -49,6 +49,22 @@
                     $('#test2Result').attr('class', 'alert alert-danger').text('Wrong, try again!');
                 }
             });
+
+            $('#test3').on('click', function () {
+                var code = $('#test3code').val();
+                eval(code);
+                var elText = $('#test3hidden').text();
+                if (elText === 'hello') {
+                    $('#test3Result')
+                        .attr('class', 'alert alert-success')
+                        .text('Correct!');
+                } else {
+                    $('#test3Result')
+                        .attr('class', 'alert alert-danger')
+                        .text('Wrong, try again!');
+                }
+                
+            });
         });
     </script>
 </head>
@@ -77,6 +93,17 @@
                 <button id="test2" class="btn btn-primary btn-large">Test</button>
             </div>
 
+        </div>
+        <div class="form-group row">
+            <div class="col-lg-12">
+                <h2>Test 3</h2>
+                <div id="test3hidden" class="d-none"></div>
+                <textarea id="test3code" class="form-control code">
+// Modify the text of the #test3hidden element to say hello
+                </textarea>
+                <div id="test3Result" class="alert alert-secondary">Click Test</div>
+                <button id="test3" class="btn btn-primary btn-large">Test</button>
+            </div>
         </div>
     </div>
 </body>
