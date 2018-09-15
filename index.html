@@ -17,45 +17,13 @@
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>
     <title>Test Your JS Coding Skills</title>
+    <script type="text/javascript" src="assets/data.js"></script>
     <script type="text/javascript" src="assets/app.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Test Your JS Coding Skills</h1>
-        <div class="form-group row">
-            <div class="col-lg-12">
-                <h2>Test 1: For Loops</h2>
-                <textarea id="test1code" class="form-control code">
-//Write a for loop that will call the function test1 100 times
-</textarea>
-                <div id="test1Result" class="alert alert-secondary">Click "Test" to see result</div>
-                <button id="test1" class="btn btn-primary btn-large">Test</button>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-lg-12">
-                <h2>Test 2: Functions</h2>
-                <textarea id="test2code" class="form-control code">
-// Write a function called test2 that takes 2 parameters that are numbers and returns the 
-// larger of the numbers
-</textarea>
-                <div id="test2Result"class="alert alert-secondary">Click "Test" to see result</div>
-                <button id="test2" class="btn btn-primary btn-large">Test</button>
-            </div>
-
-        </div>
-        <div class="form-group row">
-            <div class="col-lg-12">
-                <h2>Test 3</h2>
-                <div id="test3hidden" class="d-none"></div>
-                <textarea id="test3code" class="form-control code">
-// Modify the text of the #test3hidden element to say hello
-</textarea>
-                <div id="test3text"></div>
-                <div id="test3Result" class="alert alert-secondary">Click Test</div>
-                <button id="test3" class="btn btn-primary btn-large">Test</button>
-            </div>
-        </div>
+        <div class="form-group row" id="testContainer"></div>
     </div>
 </body>
 </html>
