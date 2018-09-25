@@ -24,15 +24,21 @@ $(document).ready(function () {
         tests[x].button.on('click', null, tests[x], function (event) {
             var test = event.data;
             test.editor.save();
-            var pass;
+            var messages;
             //assume that invalid code will be written
             try {
-                pass = test.testHandler(test.textarea.val());
+                messages = test.testHandler(test.textarea.val());
             } catch (e) {
                 console.log(e);
-                pass = false;
+                messages = [{description: 'Syntax error in your code: ' + e, passed: false}];
             }
-            showPassOrFail(pass, test.alert);
+            var failed = [];
+            for (var x = 0; x < messages.length; x++) {
+                if (messages[x].passed !== true) {
+                    failed.push(messages[x]);
+                }
+            }
+            showPassOrFail(failed.length === 0, test.alert, failed);
         });
 
     }
@@ -40,11 +46,17 @@ $(document).ready(function () {
     /**
      * Reduce code duplication and centralize the success/fail code.
      */
-    function showPassOrFail (condition, el) {
+    function showPassOrFail (condition, el, messages) {
+        messages = messages || [];
+        $(el).empty();
         if (condition) {
             $(el).attr('class', 'alert alert-success').text('Correct!');
         } else {
             $(el).attr('class', 'alert alert-danger').text('Wrong, try again!');
+        }
+        var ul = $(el).append('<ul>');
+        for (var x = 0; x < messages.length; x++) {
+            ul.append('<li>' + messages[x].description + '</ul>');
         }
     }
 });

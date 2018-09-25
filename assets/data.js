@@ -8,7 +8,10 @@ var tests = [
                 counter++;
             } 
             eval(code);
-            return counter === 100;
+            return [{
+                description: 'The function testing was called ' + counter + ' times, expected 100',
+                passed: counter === 100
+            }];
         }
     },
     {
@@ -19,6 +22,17 @@ var tests = [
             var try1 = compare(24, 34) === Math.max(24,34);
             var try2 = compare(100, 100) === Math.max(100, 100);
             var try3 = compare(8, -1) === Math.max(8, -1);
+            return [
+            {
+                description: 'Max of 24 and 34 was not 34',
+                passed: try1
+            }, {
+                description: 'Max of 100 and 100 was not 100',
+                passed: try2
+            }, {
+                description: 'Max of 8 and -1 was not 8',
+                passed: try3
+            }];
             return try1 && try2 && try3;
         }
     },
@@ -30,7 +44,29 @@ var tests = [
             eval(code);
             var elText = $('#testhidden').text();
             $('#testhidden').remove();
-            return elText === 'hello';
+            return [{
+                description: '#testhidden has text of "' + elText + '", expected "hello"',
+                passed: elText === 'hello'
+            }];
+        }
+    },
+    {
+        name: "Adding Elements",
+        source: "// create a new element with the id \"newElement\" and add it to the #testhidden element.",
+        testHandler: function (code) {
+            $('<div>').attr('id', 'testhidden').addClass('d-none').text('').appendTo($(document.body));
+            eval(code);
+            var tests = [
+                {
+                    description: "Inside #testhidden, #newElement was found " + $('').length + ' times, epxected 1',
+                    passed: $('#testhidden div#newElement').length === 1
+                },
+                {
+                    description: '#newElement was found ' + $('#newElement').length + ' times, expected 1',
+                    passed: $('#newElement').length === 1
+                }];
+            $('#testhidden').remove();
+            return tests;
         }
     }
 ];
